@@ -104,7 +104,6 @@ void text_box_base::set_maximum_length(const size_t maximum_length)
 			selection_length_ = maximum_length - selection_start_;
 		}
 		update_canvas();
-		set_is_dirty(true);
 	}
 }
 
@@ -117,7 +116,6 @@ void text_box_base::set_value(const std::string& text)
 		selection_start_ = text_.get_length();
 		selection_length_ = 0;
 		update_canvas();
-		set_is_dirty(true);
 	}
 }
 
@@ -138,7 +136,6 @@ void text_box_base::set_cursor(const size_t offset, const bool select)
 		copy_selection(true);
 #endif
 		update_canvas();
-		set_is_dirty(true);
 
 	} else {
 		assert(offset <= text_.get_length());
@@ -146,7 +143,6 @@ void text_box_base::set_cursor(const size_t offset, const bool select)
 		selection_length_ = 0;
 
 		update_canvas();
-		set_is_dirty(true);
 	}
 }
 
@@ -159,7 +155,6 @@ void text_box_base::insert_char(const utf8::string& unicode)
 		// Update status
 		set_cursor(selection_start_ + utf8::size(unicode), false);
 		update_canvas();
-		set_is_dirty(true);
 	}
 }
 
@@ -204,7 +199,6 @@ void text_box_base::paste_selection(const bool mouse)
 	selection_start_ += text_.insert_text(selection_start_, text);
 
 	update_canvas();
-	set_is_dirty(true);
 	fire(event::NOTIFY_MODIFIED, *this, nullptr);
 }
 
@@ -212,7 +206,6 @@ void text_box_base::set_selection_start(const size_t selection_start)
 {
 	if(selection_start != selection_start_) {
 		selection_start_ = selection_start;
-		set_is_dirty(true);
 	}
 }
 
@@ -220,7 +213,6 @@ void text_box_base::set_selection_length(const int selection_length)
 {
 	if(selection_length != selection_length_) {
 		selection_length_ = selection_length;
-		set_is_dirty(true);
 	}
 }
 
@@ -260,7 +252,6 @@ void text_box_base::set_state(const state_t state)
 {
 	if(state != state_) {
 		state_ = state;
-		set_is_dirty(true);
 	}
 }
 
@@ -304,8 +295,6 @@ void text_box_base::cursor_timer_callback()
 	for(auto& tmp : get_canvases()) {
 		tmp.set_variable("cursor_alpha", wfl::variant(cursor_alpha_));
 	}
-
-	set_is_dirty(true);
 }
 
 void text_box_base::reset_cursor_state()
