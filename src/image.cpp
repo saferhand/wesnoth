@@ -1008,7 +1008,7 @@ surface get_image(const image::locator& i_locator, TYPE type)
 	i_locator.add_to_cache(*imap, res);
 
 	// Add the raw image to the texture cache.
-	if(type != UNSCALED) {
+	if(type == UNSCALED && res != nullptr) {
 #ifdef _OPENMP
 #pragma omp critical(texture_cache)
 #endif //_OPENMP
@@ -1023,6 +1023,10 @@ texture get_texture(const image::locator& i_locator)
 	// Returned the cached texture if applicable. If the image is already cached, the corresponding
 	// unscaled/unmodified surface has already been loaded from disk.
 	texture res;
+
+	if(i_locator.is_void()) {
+		return res;
+	}
 
 	bool in_cache;
 
