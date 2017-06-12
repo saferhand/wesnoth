@@ -319,6 +319,7 @@ void CVideo::render_copy(
 	// If no additional data was provided, render immediately.
 	if(!flip_h && !flip_v) {
 		SDL_RenderCopy(*window, txt, src_rect, dst_rect);
+		return;
 	}
 
 	// Calculate flipping mode.
