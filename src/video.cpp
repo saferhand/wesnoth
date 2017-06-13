@@ -133,6 +133,10 @@ bool CVideo::non_interactive() const
 
 SDL_Rect screen_area()
 {
+	if(!frameBuffer) {
+		CVideo::get_singleton().update_framebuffer();
+	}
+
 	return {0, 0, frameBuffer->w, frameBuffer->h};
 }
 
